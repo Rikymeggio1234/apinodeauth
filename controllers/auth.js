@@ -37,7 +37,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     const {username, password} = req.body
     const user = await User.findOne({username})
-    if(!user) return res.status(404).json/{status: "error", message: "username o password errata"}
+    if(!user) return res.status(404).json({status: "error", message: "username o password errata"})
     if(await bcrypt.compare(password, user.password)){
         const token = jwt.sign({
             id: user._id,
@@ -45,10 +45,9 @@ export const loginUser = async (req, res) => {
         }, process.env.JWT_SECRET)
         let localStorage = new LocalStorage('./scratch'); 
         localStorage.setItem('authToken', `Bearer ${token}`)
-    } else {
-        res.status(401).json({status: "error", message: "username o password errata"})
+        return res.status(200).json({status: "success", message: "loggin avvenuto con successo"})
     }
-    res.end("<h1>LOGGATO</h1>")
+    res.status(401).json({status: "error", message: "username o password errata"})
 }
 
 export const profile = async (req, res) => {
@@ -69,5 +68,5 @@ export const profile = async (req, res) => {
 export const logout = async (req, res) => {
     let localStorage = new LocalStorage('./scratch');
     localStorage.setItem('authToken', 'fuhvuhvuf')
-    res.status(403).send("<h1>LOGOUT</h1>")
+    return res.status(403).json({status: "logout avvenuto", message: "non più autorizzato"})
 }

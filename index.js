@@ -18,7 +18,7 @@ app.use(cors())//per collegare il backand al frontand
 app.get('/', (req, res) => { res.send("<h1>HOMEPAGE</h1>")})
 app.use('/', authRouter)
 
-mongoose.connect(process.env.CONNECTION_URL)
+mongoose.connect(process.env.CONNECTION_URL_DEV)
 .then(()=>{
     app.listen(PORT, (req, res) => {
         console.log(`server running on port: ${PORT}`)
