@@ -8,7 +8,7 @@ import authRouter from './routes/auth.js'
 const app = express()
 dotenv.config()
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 
 app.use(express.json())//per gestire i file json che arrivano dall'esterno
 app.use(express.urlencoded({extended: false}))//per gestire i dati ricevuti da form html
