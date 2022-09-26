@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended: false}))//per gestire i dati ricevuti da f
 app.use(cors())//per collegare il backand al frontand
 
 //gestire le routes
-app.get('/', (req, res) => { res.send("<h1>HOMEPAGE APINODEAUTH</h1>")})
+app.get('/', (req, res) => { res.send("<h1>HOMEPAGE</h1>")})
 app.use('/', authRouter)
 
 mongoose.connect(process.env.CONNECTION_URL)
