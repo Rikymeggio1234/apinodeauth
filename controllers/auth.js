@@ -18,7 +18,8 @@ export const registerUser = async (req, res) => {
             return res.json({status: 'error', message: 'email non presente o non valido'})
         }
         if(!username || typeof username != 'string'){
-            return res.json({status: 'error', message: 'username non valido'})        }     
+            return res.json({status: 'error', message: 'username non valido'})        
+        }     
         if(!password || typeof password != 'string'){
             return res.json({status: 'error', message: 'password non valida'})
         }     
