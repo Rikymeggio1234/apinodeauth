@@ -67,7 +67,7 @@ export const profile = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-    let localStorage = new LocalStorage('./scratch');
-    localStorage.setItem('authToken', '')
+    localStorage = new LocalStorage();
+    LocalStorage.setItem('authToken', '')
     return res.status(403).json({status: "logout avvenuto", message: "non più autorizzato"})
 }
