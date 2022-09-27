@@ -29,9 +29,9 @@ export const registerUser = async (req, res) => {
         const user = new User({nome: nome, cognome: cognome, email: email, username: username, password: ashedpassword})
         try{
             await user.save()
-            res.status(201).json(user)
+            return res.status(201).json({message: "success", message: "utente creato con successo", utente: user})
         }catch(error){
-            res.status(409).json({message: error.message})
+            return res.status(409).json({status: "error", message: error.message})
         }
 }
 
@@ -45,30 +45,26 @@ export const loginUser = async (req, res) => {
             username: user.username
         }, process.env.JWT_SECRET)
         localStorage.setItem('authToken', `Bearer ${token}`) 
-        return res.status(200).json({status: "success", message: "loggin avvenuto con successo"})
+        return res.status(200).json({status: "success", message: "login avvenuto con successo"})
     }
-    res.status(401).json({status: "error", message: "username o password errata"})
+    return res.status(403).json({status: "error", message: "username o password errata"})
 }
 
 export const profile = async (req, res) => {
     const authHeader = localStorage.getItem('authToken')
-    if(authHeader === ''){
-        return res.status(403).json({message: "non autorizzato"})
-    } else {
-        const token = authHeader && authHeader.split(' ')[1]
-        if(token == null) return res.sendStatus(401)
-        jwt.verify(token, process.env.JWT_SECRET, (error, user)=>{
-            console.log(error)
-            if(error) return res.sendStatus(403)
-            req.user = user
-        })
-        let profile = req.user
-        const profileTrovato = await User.findOne(profile)
-        return res.status(200).json(profileTrovato)
-    }
+    const token = authHeader && authHeader.split(' ')[1]
+    if(token == null) return res.sendStatus(401)
+    jwt.verify(token, process.env.JWT_SECRET, (error, user)=>{
+        console.log(error)
+        if(error) return res.sendStatus(403)
+        req.user = user
+    })
+    let profile = req.user
+    const profileTrovato = await User.findOne(profile)
+    return res.status(201).json({status: "success", message: "utente trovato con successo", user: profileTrovato})
 }
 
 export const logout = async (req, res) => {
     localStorage.setItem('authToken', ``)
-    return res.status(403).json({status: "logout avvenuto", message: "non più autorizzato"})
+    return res.status(201).json({status: "success", message: "logout avvenuto con successo"})
 }

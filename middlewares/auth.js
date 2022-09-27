@@ -10,7 +10,7 @@ export const authenticateToken = (req, res, next) => {
         if(token == null) return res.sendStatus(401)
         jwt.verify(token, process.env.JWT_SECRET, (error, user)=>{
             console.log(error)
-            if(error) return res.sendStatus(403)
+            if(error) return res.status(403).json({status: "error", message: "non autorizzato"})
             req.user = user
             next()
         })
